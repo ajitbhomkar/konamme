@@ -37,7 +37,7 @@ export const about = {
   body: `Nestled in the Malabar rainforest eco-region, Konamme Wellness Valley is a unique tropical ecosystem for holistic wellness — balancing your body, mind and soul through ancient traditional healing techniques and modern wellness treatments.
 
 Our wellness programs are specially designed as comprehensive pain relief, functional medicine for families, natural hormonal solutions, holistic nutritional therapy, treatment of lifestyle disorders and integrative mental health.`,
-  founder: 'Founded under the valuable guidance of Mr. Sham Bhat — aged 94, honoured by the Karnataka Government for his lifelong knowledge of traditional herbs and Ayurvedic medicine.',
+  founder: 'Founded under the valuable guidance of Mr. Sham Bhat  honoured by the Karnataka Government for his lifelong knowledge of traditional herbs and Ayurvedic medicine.',
   image1: 'https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=600&q=80',
   image2: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80',
   stats: [
