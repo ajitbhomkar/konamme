@@ -23,9 +23,28 @@
 /* Brand */
 .brand {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.brandLogo {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  transition: opacity var(--transition);
+}
+
+.scrolled .brandLogo {
+  opacity: 1;
+}
+
+.brandText {
+  display: flex;
   flex-direction: column;
   line-height: 1.1;
-  text-decoration: none;
 }
 
 .brandName {

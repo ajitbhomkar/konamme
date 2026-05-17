@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
 import {
   siteConfig, introBand, about, services,
-  programs, conditions, retreat, nearby, team,
+  programs, conditions, retreat, gallery, nearby, team,
 } from './data'
 
 // ── Scroll Reveal Hook ─────────────────────────────
@@ -79,28 +79,95 @@ function IntroBand() {
 
 // ── About ──────────────────────────────────────────
 function About() {
+  const [imgHovered, setImgHovered] = useState(false)
   return (
     <section id="about" style={{ padding: '6rem 2rem', background: 'var(--cream-light)' }}>
       <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }} className="about-grid">
-        {/* Images */}
-        <div className="reveal" style={{ position: 'relative', paddingBottom: '2.5rem', paddingRight: '2.5rem' }}>
-          <img
-            src={about.image1}
-            alt="Konamme Wellness retreat"
-            loading="lazy"
-            style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block' }}
-          />
-          <img
-            src={about.image2}
-            alt="Ayurvedic treatment"
-            loading="lazy"
-            style={{
-              position: 'absolute', bottom: 0, right: 0,
-              width: '55%', aspectRatio: '4/3', objectFit: 'cover',
-              border: '6px solid var(--cream-light)',
-              boxShadow: '0 8px 32px rgba(26,46,26,0.18)',
-            }}
-          />
+        {/* Image */}
+        <div className="reveal" style={{ position: 'relative', paddingTop: '2rem', paddingLeft: '2rem' }}>
+          {/* Diagonal forest green accent */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'var(--forest)',
+            clipPath: 'polygon(0 0, 62% 0, 100% 100%, 0 100%)',
+            zIndex: 0,
+            transition: 'opacity 0.4s ease',
+            opacity: imgHovered ? 0.75 : 1,
+          }} />
+
+          {/* Gold corner bracket — top left */}
+          <div style={{
+            position: 'absolute', top: '0.4rem', left: '0.4rem',
+            width: 36, height: 36,
+            borderTop: '2px solid var(--gold)',
+            borderLeft: '2px solid var(--gold)',
+            zIndex: 3,
+            opacity: imgHovered ? 1 : 0.35,
+            transform: imgHovered ? 'scale(1.15)' : 'scale(1)',
+            transition: 'all 0.4s ease',
+          }} />
+
+          {/* Image wrapper — overflow hidden for zoom */}
+          <div
+            style={{ position: 'relative', zIndex: 1, overflow: 'hidden', cursor: 'default' }}
+            onMouseEnter={() => setImgHovered(true)}
+            onMouseLeave={() => setImgHovered(false)}
+          >
+            <img
+              src={about.image1}
+              alt="Konamme Wellness retreat"
+              loading="lazy"
+              style={{
+                width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block',
+                transform: imgHovered ? 'scale(1.07)' : 'scale(1)',
+                transition: 'transform 0.7s ease',
+              }}
+            />
+
+            {/* Hover overlay — quote slides up */}
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'linear-gradient(to top, rgba(20,40,20,0.93) 0%, rgba(20,40,20,0.55) 45%, transparent 72%)',
+              opacity: imgHovered ? 1 : 0,
+              transition: 'opacity 0.45s ease',
+              display: 'flex', alignItems: 'flex-end',
+              padding: '2rem',
+              pointerEvents: 'none',
+            }}>
+              <div style={{
+                transform: imgHovered ? 'translateY(0)' : 'translateY(18px)',
+                transition: 'transform 0.5s ease',
+              }}>
+                <p style={{
+                  fontFamily: 'var(--font-display)', fontSize: '1.15rem',
+                  color: 'var(--cream)', lineHeight: 1.65, fontStyle: 'italic',
+                  marginBottom: '0.75rem',
+                }}>
+                  "Where ancient wisdom<br />meets modern healing"
+                </p>
+                <div style={{ width: 40, height: 2, background: 'var(--gold)' }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Floating location badge */}
+          <div style={{
+            position: 'absolute', bottom: '1.8rem', right: '-1rem',
+            background: 'var(--cream-light)',
+            color: 'var(--forest)',
+            padding: '0.65rem 1.3rem',
+            fontSize: '0.63rem',
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+            zIndex: 2,
+            boxShadow: imgHovered ? '0 8px 32px rgba(0,0,0,0.2)' : '0 4px 24px rgba(0,0,0,0.12)',
+            borderLeft: '3px solid var(--gold)',
+            transform: imgHovered ? 'translateX(-5px)' : 'translateX(0)',
+            transition: 'all 0.35s ease',
+          }}>
+            Kasaragod · Kerala
+          </div>
         </div>
 
         {/* Text */}
@@ -118,7 +185,7 @@ function About() {
           <p style={{ color: 'var(--text-muted)', lineHeight: 1.85, fontStyle: 'italic' }}>{about.founder}</p>
 
           {/* Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem', marginTop: '2.8rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.2rem', marginTop: '2.8rem' }}>
             {about.stats.map((s, i) => (
               <div key={i} style={{ background: 'var(--forest)', padding: '1.4rem', color: 'var(--cream)' }}>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 300, display: 'block', lineHeight: 1, marginBottom: '0.35rem' }}>{s.num}</span>
@@ -210,9 +277,9 @@ function Programs() {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.8rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
           {programs.map((p, i) => (
-            <ProgramCard key={i} prog={p} />
+            <ProgramCard key={i} prog={p} index={i} />
           ))}
         </div>
       </div>
@@ -220,24 +287,88 @@ function Programs() {
   )
 }
 
-function ProgramCard({ prog }) {
+function ProgramCard({ prog, index }) {
   const [hovered, setHovered] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+  const num = String(index + 1).padStart(2, '0')
+
   return (
     <div
       className="reveal"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: 'var(--cream-light)',
-        borderLeft: '3px solid var(--forest)',
-        padding: '2.2rem 2rem',
-        transform: hovered ? 'translateY(-5px)' : 'translateY(0)',
-        boxShadow: hovered ? '0 16px 40px rgba(26,46,26,0.1)' : 'none',
-        transition: 'transform var(--transition), box-shadow var(--transition)',
+        background: hovered ? '#fff' : 'var(--cream-light)',
+        padding: '0',
+        position: 'relative',
+        overflow: 'hidden',
+        boxShadow: hovered ? '0 20px 48px rgba(26,46,26,0.13)' : '0 2px 12px rgba(26,46,26,0.05)',
+        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
+        transition: 'all 0.35s ease',
       }}
     >
-      <h3 style={{ fontSize: '1.3rem', color: 'var(--dark)', marginBottom: '0.8rem' }}>{prog.title}</h3>
-      <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.85, margin: 0 }}>{prog.desc}</p>
+      {/* Gold top bar */}
+      <div style={{
+        height: 4,
+        background: hovered
+          ? 'linear-gradient(to right, var(--forest), var(--gold))'
+          : 'linear-gradient(to right, var(--gold), var(--earth-light))',
+        transition: 'background 0.35s ease',
+      }} />
+
+      <div style={{ padding: '1.8rem 1.8rem 1.6rem' }}>
+        {/* Faded number */}
+        <span style={{
+          position: 'absolute', top: '1rem', right: '1.4rem',
+          fontFamily: 'var(--font-display)', fontSize: '3.8rem', fontWeight: 300,
+          color: 'rgba(45,74,45,0.07)', lineHeight: 1, userSelect: 'none',
+          pointerEvents: 'none',
+        }}>{num}</span>
+
+        {/* Title */}
+        <h3 style={{
+          fontSize: '1.12rem', fontFamily: 'var(--font-display)',
+          fontWeight: 500, color: 'var(--dark)',
+          marginBottom: '1rem', lineHeight: 1.3,
+          paddingRight: '2rem',
+        }}>{prog.title}</h3>
+
+        {/* Divider */}
+        <div style={{ width: 32, height: 2, background: 'var(--gold)', marginBottom: '1rem' }} />
+
+        {/* Description — clamped or expanded */}
+        <p style={{
+          fontSize: '0.87rem',
+          color: 'var(--text-muted)',
+          lineHeight: 1.82,
+          fontStyle: 'italic',
+          margin: 0,
+          display: '-webkit-box',
+          WebkitBoxOrient: 'vertical',
+          WebkitLineClamp: expanded ? 'unset' : 4,
+          overflow: expanded ? 'visible' : 'hidden',
+        }}>{prog.desc}</p>
+
+        {/* Read more / less */}
+        <button
+          onClick={() => setExpanded(e => !e)}
+          style={{
+            marginTop: '0.9rem',
+            fontFamily: 'var(--font-body)',
+            fontSize: '0.68rem', fontWeight: 500,
+            letterSpacing: '0.14em', textTransform: 'uppercase',
+            color: 'var(--forest-light)',
+            background: 'none', border: 'none',
+            cursor: 'pointer', padding: 0,
+            display: 'flex', alignItems: 'center', gap: '0.3rem',
+            transition: 'color var(--transition)',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--forest)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--forest-light)'}
+        >
+          {expanded ? '↑ Read less' : 'Read more →'}
+        </button>
+      </div>
     </div>
   )
 }
@@ -405,11 +536,18 @@ function Team() {
         <div className="reveal" style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <span className="section-label" style={{ color: 'var(--earth-light)' }}>Our Experts</span>
           <h2 style={{ color: 'var(--cream)', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>The Healing Team</h2>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem', marginTop: '0.8rem', fontStyle: 'italic' }}>
+            A multidisciplinary team of healers, doctors & specialists
+          </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1.5rem' }}>
-          {team.map((role, i) => (
-            <TeamItem key={i} role={role} />
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+          gap: '1.5rem',
+        }}>
+          {team.map((member, i) => (
+            <TeamCard key={i} member={member} />
           ))}
         </div>
       </div>
@@ -417,31 +555,75 @@ function Team() {
   )
 }
 
-function TeamItem({ role }) {
+function TeamCard({ member }) {
   const [hovered, setHovered] = useState(false)
-  const initial = role.charAt(0).toUpperCase()
+  const initials = member.name.split(' ').filter(w => /^[A-Z]/.test(w)).slice(0, 2).map(w => w[0]).join('')
+
   return (
     <div
       className="reveal"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        textAlign: 'center', padding: '2rem 1rem',
-        background: hovered ? '#2a4a2a' : '#203520',
-        transition: 'background var(--transition)',
+        position: 'relative',
+        overflow: 'hidden',
+        aspectRatio: '3/4',
+        cursor: 'default',
+        background: '#1a2e1a',
       }}
     >
+      {member.photo ? (
+        <img
+          src={member.photo}
+          alt={member.name}
+          style={{
+            width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top',
+            display: 'block',
+            transition: 'transform 0.5s ease',
+            transform: hovered ? 'scale(1.06)' : 'scale(1)',
+          }}
+        />
+      ) : (
+        <div style={{
+          width: '100%', height: '100%',
+          background: 'linear-gradient(135deg, #1e3d1e 0%, #2d5a2d 100%)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{
+            fontFamily: 'var(--font-display)', fontSize: '3.5rem', fontWeight: 300,
+            color: 'rgba(196,168,130,0.4)',
+          }}>{initials}</span>
+        </div>
+      )}
+
+      {/* Always-visible bottom strip */}
       <div style={{
-        width: 64, height: 64, borderRadius: '50%',
-        background: 'var(--forest-mid)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: 'var(--cream)',
-        margin: '0 auto 1rem',
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        background: hovered
+          ? 'linear-gradient(to top, rgba(20,40,20,0.97) 0%, rgba(20,40,20,0.85) 60%, transparent 100%)'
+          : 'linear-gradient(to top, rgba(10,24,10,0.88) 0%, rgba(10,24,10,0.4) 60%, transparent 100%)',
+        padding: hovered ? '2.2rem 1.4rem 1.4rem' : '1.6rem 1.4rem 1.2rem',
+        transition: 'all 0.35s ease',
       }}>
-        {initial}
+        <h4 style={{
+          fontFamily: 'var(--font-display)', fontWeight: 400,
+          fontSize: '1.05rem', color: '#fff', marginBottom: '0.3rem', lineHeight: 1.2,
+        }}>{member.name}</h4>
+        <span style={{
+          fontSize: '0.65rem', letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: 'var(--earth-light)',
+        }}>{member.role}</span>
       </div>
-      <h4 style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', fontWeight: 500, color: 'var(--cream)', marginBottom: '0.25rem', letterSpacing: '0.04em' }}>{role}</h4>
-      <span style={{ fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--earth-light)' }}>Specialist</span>
+
+      {/* Gold top accent on hover */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        height: 3,
+        background: 'linear-gradient(to right, var(--forest), var(--gold))',
+        transform: hovered ? 'scaleX(1)' : 'scaleX(0)',
+        transformOrigin: 'left',
+        transition: 'transform 0.4s ease',
+      }} />
     </div>
   )
 }
@@ -453,14 +635,36 @@ function Contact() {
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     setStatus('sending')
-    // Simulate submission — replace with real API call (EmailJS, Formspree, etc.)
-    setTimeout(() => {
-      setStatus('success')
-      setForm({ name: '', email: '', phone: '', interest: '', message: '' })
-    }, 1200)
+    try {
+      const res = await fetch(
+        `https://formspree.io/f/${import.meta.env.VITE_FORMSPREE_ID}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            interest: form.interest,
+            message: form.message,
+            _subject: `New enquiry from ${form.name} — Konamme Wellness`,
+            _replyto: form.email,
+            _cc: 'ajitbhomkar@gmail.com',
+          }),
+        }
+      )
+      if (res.ok) {
+        setStatus('success')
+        setForm({ name: '', email: '', phone: '', interest: '', message: '' })
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   const inputStyle = {
@@ -491,7 +695,7 @@ function Contact() {
           </p>
 
           {[
-            { icon: '📞', label: 'Phone', value: `${siteConfig.phone1} · ${siteConfig.phone2}` },
+            { icon: '📞', label: 'Phone', value: siteConfig.phone2 ? `${siteConfig.phone1} · ${siteConfig.phone2}` : siteConfig.phone1 },
             { icon: '💬', label: 'WhatsApp', value: siteConfig.whatsapp, href: `https://wa.me/${siteConfig.whatsapp.replace(/\D/g, '')}` },
             { icon: '✉',  label: 'Email', value: siteConfig.email, href: `mailto:${siteConfig.email}` },
             { icon: '🩺', label: 'Medical Enquiry', value: `${siteConfig.doctorName} — ${siteConfig.doctorPhone}` },
@@ -584,6 +788,112 @@ function Contact() {
       <style>{`
         @media (max-width: 900px) {
           .contact-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
+        }
+      `}</style>
+    </section>
+  )
+}
+
+// ── Gallery ────────────────────────────────────────
+function Gallery() {
+  const [active, setActive] = useState(null)
+
+  return (
+    <section id="gallery" style={{ padding: '6rem 2rem', background: 'var(--dark)' }}>
+      <div style={{ maxWidth: 'var(--max-w)', margin: '0 auto' }}>
+        <div className="reveal" style={{ marginBottom: '4rem' }}>
+          <span className="section-label" style={{ color: 'var(--earth-light)' }}>Life at Konamme</span>
+          <h2 style={{ color: 'var(--cream)', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Wellness in Every Moment</h2>
+          <div className="divider" />
+          <p style={{ color: 'rgba(245,240,232,0.6)', maxWidth: '50ch', lineHeight: 1.85 }}>
+            From ancient herbal preparations to nourishing meals and therapeutic rituals — a glimpse into the healing world of Konamme Wellness.
+          </p>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridAutoRows: '220px',
+          gap: '6px',
+        }} className="gallery-grid">
+          {gallery.map((img, i) => (
+            <div
+              key={i}
+              className={`reveal reveal-delay-${Math.min(i % 4 + 1, 4)}`}
+              onClick={() => setActive(img)}
+              style={{
+                gridColumn: i === 0 || i === 4 ? 'span 2' : 'span 1',
+                gridRow: i === 0 || i === 4 ? 'span 2' : 'span 1',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                position: 'relative',
+              }}
+            >
+              <img
+                src={img.src}
+                alt={img.alt}
+                loading="lazy"
+                style={{
+                  width: '100%', height: '100%',
+                  objectFit: 'cover',
+                  transition: 'transform 0.5s ease',
+                  display: 'block',
+                }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              />
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(to top, rgba(26,46,26,0.5) 0%, transparent 60%)',
+                pointerEvents: 'none',
+              }} />
+              <span style={{
+                position: 'absolute', bottom: '0.8rem', left: '0.9rem',
+                fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase',
+                color: 'rgba(245,240,232,0.75)', pointerEvents: 'none',
+              }}>{img.alt}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Lightbox */}
+      {active && (
+        <div
+          onClick={() => setActive(null)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 1000,
+            background: 'rgba(0,0,0,0.92)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '2rem',
+          }}
+        >
+          <img
+            src={active.src}
+            alt={active.alt}
+            style={{ maxWidth: '90vw', maxHeight: '88vh', objectFit: 'contain' }}
+            onClick={e => e.stopPropagation()}
+          />
+          <button
+            onClick={() => setActive(null)}
+            aria-label="Close"
+            style={{
+              position: 'fixed', top: '1.5rem', right: '1.5rem',
+              width: 40, height: 40, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)', border: 'none',
+              color: '#fff', fontSize: '1.2rem', cursor: 'pointer',
+            }}
+          >✕</button>
+        </div>
+      )}
+
+      <style>{`
+        @media (max-width: 900px) {
+          .gallery-grid { grid-template-columns: repeat(2,1fr) !important; }
+        }
+        @media (max-width: 500px) {
+          .gallery-grid { grid-template-columns: 1fr !important; }
+          .gallery-grid > div { grid-column: span 1 !important; grid-row: span 1 !important; }
         }
       `}</style>
     </section>
@@ -690,6 +1000,7 @@ export default function App() {
         <Programs />
         <Conditions />
         <Retreat />
+        <Gallery />
         <Nearby />
         <Team />
         <Contact />

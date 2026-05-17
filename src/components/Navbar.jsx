@@ -7,6 +7,7 @@ const navLinks = [
   { label: 'Services', href: '#services' },
   { label: 'Programs', href: '#programs' },
   { label: 'Retreat',  href: '#retreat' },
+  { label: 'Gallery',  href: '#gallery' },
   { label: 'Team',     href: '#team' },
   { label: 'Contact',  href: '#contact' },
 ]
@@ -41,8 +42,16 @@ export default function Navbar() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       {/* Brand */}
       <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className={styles.brand}>
-        <span className={styles.brandName}>{siteConfig.name}</span>
-        <span className={styles.brandSub}>{siteConfig.tagline}</span>
+        <img
+          src="/images/logo.png"
+          alt="Konamme Wellness"
+          className={styles.brandLogo}
+          onError={e => { e.currentTarget.style.display = 'none' }}
+        />
+        <div className={styles.brandText}>
+          <span className={styles.brandName}>{siteConfig.name}</span>
+          <span className={styles.brandSub}>{siteConfig.tagline}</span>
+        </div>
       </a>
 
       {/* Desktop Nav */}
